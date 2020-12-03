@@ -1,0 +1,10 @@
+module sevenseg_level (
+    input level[16],
+    output out[7]
+  ) {
+    level_digit leveldig;
+  always {
+    leveldig.in = level;
+    out = leveldig.out;
+  }
+}

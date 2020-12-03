@@ -1,0 +1,13 @@
+module shiftled (
+    input rst,
+    input clk,
+    input led[37],
+    input shifter[37],
+    output out[37]
+  ) {
+
+  always {
+    out = 0;
+    out = led >> shifter;
+  }
+}

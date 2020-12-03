@@ -1,0 +1,79 @@
+//the regfile for all game information
+module game_miniRegfiles (
+    input clk,  // clock
+    input rst,  // reset
+    input write_address[4], // write address
+    input we, // write enable
+    input data[16], // data in
+
+    input read_address_a[4], //address port a 
+    input read_address_b[4], //address port b
+    output out_a[16], //read port a
+    output out_b[16], //read port b
+    
+    output level[16],
+    output randA[16],
+    output randB[16]
+
+
+  ) 
+
+{
+  .clk(clk){
+    .rst(rst){
+      dff level_reg[16];
+      dff inpoperator_reg[16];
+      dff randA_reg[16];
+      dff randB_reg[16];
+      dff correctAns_reg[16];
+      dff userAns_reg[16];
+      dff temp_reg[16];
+    }
+  }
+
+  always {
+  
+    //write port
+    if (we){
+      case(write_address){
+        b0000 : randA_reg.d = data;
+        b0001 : randB_reg.d = data;
+        b0010 : correctAns_reg.d = data;
+        b0011 : userAns_reg.d = data;
+        b0100 : inpoperator_reg.d = data;
+        b0101 : level_reg.d = data;
+        b0110 : temp_reg.d = data;
+      }
+    }
+    
+      
+    //read port a
+    case(read_address_a){
+        b0000 : out_a = randA_reg.q;
+        b0001 : out_a = randB_reg.q;
+        b0010 : out_a = correctAns_reg.q;
+        b0011 : out_a = userAns_reg.q;
+        b0100 : out_a = inpoperator_reg.q;
+        b0101 : out_a = level_reg.q;
+        b0110 : out_a = temp_reg.q;
+        default : out_a = 0;
+    }
+    
+    //read port b
+    case(read_address_b){
+        b0000 : out_b = randA_reg.q;
+        b0001 : out_b = randB_reg.q;
+        b0010 : out_b = correctAns_reg.q;
+        b0011 : out_b = userAns_reg.q;
+        b0100 : out_b = inpoperator_reg.q;
+        b0101 : out_b = level_reg.q;
+        b0110 : out_b = temp_reg.q;
+        default : out_b = 0;
+    }
+    
+    level = level_reg.q;
+    randA = randA_reg.q;
+    randB = randB_reg.q;
+      
+  }
+}

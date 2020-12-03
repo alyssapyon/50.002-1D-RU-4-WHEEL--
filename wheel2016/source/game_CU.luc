@@ -1,0 +1,170 @@
+module game_CU (
+    input clk,  // clock
+    input rst,  // reset
+
+    input regfile_datain[16], //direct reading of regfile data from read_address_b
+    
+    input reset_button,
+    input select_button,
+    
+    output alufn[6],
+    output wdsel[1],
+    output asel[3],
+    output alu_out_sel[2],
+    output regfile_write_address[4],
+    output regfile_read_address_a[4],
+    output regfile_read_address_b[4],
+    output we_regfile
+  ) {
+
+  
+  .clk(clk){
+   .rst(rst){
+    fsm game_fsm={
+      START,
+      IDLE1,
+      IDLE2,
+      CHECK_ANS, 
+      CORRECT,
+      WRONG,
+      WIN,
+      LOSE,
+      GAMEOVER
+      };
+    }
+  }
+  opTOalufn opTOalufn;
+  //ledTOnum ledtonum;
+  always {
+  
+
+    
+    //wheelLED setting
+
+    
+    //ledtonum setting
+    //ledtonum.led = 0;
+    //operator to alufn setting
+    opTOalufn.opled = 00;
+    
+    
+    
+    // standard setting unless otherwise overwritten by each case 
+    alufn = 0;
+    asel = 0; 
+    we_regfile = 0;
+    regfile_write_address = 0000;
+    regfile_read_address_a = 0000;
+    regfile_read_address_b = 0000;
+    alu_out_sel = 0;
+    wdsel = 1;
+       
+    
+      
+       if (rst) {
+           game_fsm.d = game_fsm.START;
+           ////// level = 0;
+       }
+       else {
+ 
+           case(game_fsm.q){
+ 
+               game_fsm.START:
+                   asel = b00;
+                   regfile_read_address_a = b0110;
+                   wdsel = 0;
+                   we_regfile = 1;
+                   regfile_write_address = b0110; // initialize: write in: level=0
+                   if (select_button == 1) {
+                       game_fsm.d = game_fsm.IDLE1;
+                   } else if (reset_button == 1) {
+                       game_fsm.d = game_fsm.START;
+                   }
+ 
+               game_fsm.IDLE1:
+                   // randomly generate A and B, store in reg
+                   wdsel = b01;//randomly generated A
+                   we_regfile = 1;
+                   regfile_write_address = 0000;
+                   
+                   wdsel = 01;//randomly generated B
+                   we_regfile = 1;
+                   regfile_write_address = 0001;
+          
+                   // user input +/-, operation stored in reg
+                   if (select_button == 1) {
+                       we_regfile = 1;
+                       regfile_write_address = b0100; // write in: input operator
+                       game_fsm.d = game_fsm.IDLE2;
+                   } else if (reset_button == 1) {
+                       game_fsm.d = game_fsm.START;
+                   }else{game_fsm.d = game_fsm.IDLE1;}
+    
+               game_fsm.IDLE2:
+                   // calculated expected answer, stored in reg
+                   alufn = opTOalufn.ledalufn; 
+                   regfile_read_address_a = b0000; //read randA
+                   regfile_read_address_b = b0001; //read randB
+                   asel = b10; //select randA from asel mux
+                   we_regfile = 1;
+                   regfile_write_address = b0010; // write in: expected real answer
+                   if (select_button == 1) {
+                       we_regfile = 1;
+                       regfile_write_address = b0011; // write in: player input answer
+                       game_fsm.d = game_fsm.CHECK_ANS;
+                   } else if (reset_button == 1) {
+                       game_fsm.d = game_fsm.START;
+                   }
+                    else{game_fsm.d = game_fsm.IDLE2;}
+ 
+               game_fsm.CHECK_ANS: 
+                   // check if player input answer is correct
+                   // if correct: go to CORRECT
+                   // if incorrect: back to WRONG
+                   alufn = b110011; //CMPEQ
+                   regfile_read_address_a = b0010; // read out: player input answer
+                   regfile_read_address_b = b0011; // read out: expected real answer
+                   asel = b10;
+                   we_regfile = 1;
+                   regfile_write_address = b0110; // write in: temp_reg, store the result of comparison
+                   regfile_read_address_b = b0110; // read out: temp_reg
+                   if (regfile_datain == 1) {//read data from b port
+                       game_fsm.d = game_fsm.CORRECT;
+                   } else if (~regfile_datain) {
+                       game_fsm.d = game_fsm.WRONG;
+                   } else if (reset_button == 1) {
+                       game_fsm.d = game_fsm.START;
+                   }
+ 
+               game_fsm.CORRECT:
+                   // player input answer is correct
+                   // level += 1
+                   // if level < 9: go to IDEL1 for next round
+                   // if level = 9: game ends, back to START
+                   alufn=b000000; // ADD: for adding level by 1
+                   regfile_read_address_b = b0101; // read out: previous level
+                   asel = b01; //constant 1
+                   we_regfile = 1;
+                   regfile_write_address = b01010; // write in: new level
+                   regfile_read_address_b = b0110;
+                   if (~regfile_datain[3] && regfile_datain[0]) { // if level < 9
+                       game_fsm.d=game_fsm.IDLE1;
+                   } else {
+                       game_fsm.d=game_fsm.START;
+                   }
+ 
+               game_fsm.WRONG:
+                   // player input answer is wrong
+                   // back to START after reset button is pressed
+                   if (reset_button == 1) {
+                       game_fsm.d=game_fsm.START;
+                   }
+ 
+           } // end of else
+ 
+       } // end of case
+
+      
+    
+  }
+}

@@ -1,0 +1,10 @@
+module sevenseg_randB (
+    input randB[16],
+    output out[14]
+  ) {
+    rand_digit randdig;
+  always {
+    randdig.in = randB;
+    out = randdig.out;
+  }
+}

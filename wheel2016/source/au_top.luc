@@ -1,0 +1,93 @@
+module au_top (
+    input clk,              // 100MHz clock
+    input rst_n,            // reset button (active low)
+    output wheelled [37],         // 8 user controllable LEDs
+    output opled[2],
+    output led[8],
+    output display_level[7],
+    output display_randA[14],
+    output display_randB[14],
+    
+    input usb_rx,           // USB->Serial input
+    output usb_tx,          // USB->Serial output
+
+    input select_button,    // 5 buttons on IO Shield
+    input reset_button
+  ) {
+  
+  sig rst;                  // reset signal
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    .rst(rst){
+      //multi_seven_seg seg;
+      game_miniBeta gameMachine;
+      wheelLED wheelLED;
+      opLED opLED;
+    }
+    
+    reset_conditioner reset_cond;
+
+    edge_detector edge_dt_btn_p1 (#RISE(1), #FALL(0));
+    edge_detector edge_dt_btn_p2(#RISE(1), #FALL(0));
+
+    button_conditioner btn_cond_p1;
+    button_conditioner btn_cond_p2;
+    
+    
+    
+  }
+  sevenseg_level sevenseg_level;
+  sevenseg_randA sevenseg_randA;
+  sevenseg_randB sevenseg_randB;
+  always {
+    reset_cond.in = ~rst_n; // input raw inverted reset signal
+    rst = reset_cond.out;   // conditioned reset
+    
+    usb_tx = usb_rx;        // loop serial port
+    
+    led = 0;             // turn LEDs off
+    opled = 0;
+    wheelled = 0;
+    display_level = 0;
+    display_randA = 0;
+    display_randB = 0;
+    
+
+     
+    btn_cond_p1.in=select_button; //to reduce the bouncing effects of your button 
+    btn_cond_p2.in=reset_button;
+    edge_dt_btn_p1.in=btn_cond_p1.out; //get the edge of button press
+    edge_dt_btn_p2.in=btn_cond_p2.out;
+    
+    gameMachine.select_button = edge_dt_btn_p1.out;
+    gameMachine.reset_button = edge_dt_btn_p2.out;
+    
+    wheelLED.select_button = edge_dt_btn_p1.out;
+    wheelLED.reset_button = edge_dt_btn_p2.out;
+    
+    opLED.select_button = edge_dt_btn_p1.out;
+    opLED.reset_button = edge_dt_btn_p2.out;
+    
+    //show led 
+    wheelled = wheelLED.led;
+    opled = opLED.opled;
+    
+    //show 7-seg  
+    sevenseg_level.level = gameMachine.level;
+    display_level = sevenseg_level.out;
+    
+    sevenseg_randA.randA = gameMachine.randA;
+    display_randA = sevenseg_randA.out;
+    
+    sevenseg_randB.randB = gameMachine.randB;
+    display_randB = sevenseg_randB.out;
+    
+    
+
+
+    
+    //update 7segments
+  }
+}

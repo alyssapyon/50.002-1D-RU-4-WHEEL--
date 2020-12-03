@@ -1,0 +1,84 @@
+
+
+pin wheelled[0] B48;
+pin wheelled[1] B45;
+pin wheelled[2] B42;
+pin wheelled[3] B39;
+pin wheelled[4] B36;
+pin wheelled[5] B33;
+pin wheelled[6] B30;
+pin wheelled[7] B27;
+pin wheelled[8] B49;
+pin wheelled[9] B46;
+pin wheelled[10] B43;
+pin wheelled[11] B40;
+pin wheelled[12] B37;
+pin wheelled[13] B34;
+pin wheelled[14] B31;
+pin wheelled[15] B28;
+pin wheelled[16] B3;
+pin wheelled[17] B6;
+pin wheelled[18] B9;
+pin wheelled[19] B12;
+pin wheelled[20] B15;
+pin wheelled[21] B18;
+pin wheelled[22] B21;
+pin wheelled[23] B24;
+pin wheelled[24] B2;
+pin wheelled[25] B5;
+pin wheelled[26] B8;
+pin wheelled[27] B11;
+pin wheelled[28] B14;
+pin wheelled[29] B17;
+pin wheelled[30] B20;
+pin wheelled[31] B23;
+pin wheelled[32] C2;
+pin wheelled[33] C5;
+pin wheelled[34] C8;
+pin wheelled[35] C11;
+pin wheelled[36] C14;
+
+pin opled[0] C3;
+pin opled[1] C6;
+
+
+pin select_button C12 pulldown;
+pin reset_button C15 pulldown;
+
+pin display_level[0] A48; 
+pin display_level[1] A45; 
+pin display_level[2] A42; 
+pin display_level[3] A39;
+pin display_level[4] A36; 
+pin display_level[5] A33; 
+pin display_level[6] A30; 
+
+pin display_randA[0] A49 ;
+pin display_randA[1] A46 ;
+pin display_randA[2] A43 ;
+pin display_randA[3] A40 ;
+pin display_randA[4] A37 ;
+pin display_randA[5] A34 ;
+pin display_randA[6] A31 ;
+pin display_randA[7] A28 ;
+pin display_randA[8] A3 ;
+pin display_randA[9] A6 ;
+pin display_randA[10] A9 ;
+pin display_randA[11] A12 ;
+pin display_randA[12] A15 ;
+pin display_randA[13] A18 ;
+
+pin display_randB[0] C49 ;
+pin display_randB[1] C46 ;
+pin display_randB[2] C43 ;
+pin display_randB[3] C40 ;
+pin display_randB[4] C37 ;
+pin display_randB[5] C34 ;
+pin display_randB[6] C31 ;
+pin display_randB[7] C28 ;
+pin display_randB[8] C48 ;
+pin display_randB[9] C45 ;
+pin display_randB[10] C42 ;
+pin display_randB[11] C39 ;
+pin display_randB[12] C36 ;
+pin display_randB[13] C33 ;

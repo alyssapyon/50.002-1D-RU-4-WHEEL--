@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wheelgame528" board="Alchitry Au" language="Lucid" version="3">
+  <files>
+    <src>game_miniRegfiles.luc</src>
+    <src>compare.luc</src>
+    <src>shifter.luc</src>
+    <component>pipeline.luc</component>
+    <src>decimal_counter.luc</src>
+    <component>counter.luc</component>
+    <src>alu.luc</src>
+    <src>seven_seg.luc</src>
+    <src>boolean.luc</src>
+    <src>level_digit.luc</src>
+    <component>reset_conditioner.luc</component>
+    <src top="true">au_top.luc</src>
+    <component>button_conditioner.luc</component>
+    <src>ledTOnum.luc</src>
+    <src>shiftled.luc</src>
+    <src>multi_seven_seg.luc</src>
+    <src>multi_dec_ctr.luc</src>
+    <component>decoder.luc</component>
+    <src>wheelLED.luc</src>
+    <src>rand_digit.luc</src>
+    <src>game_CU.luc</src>
+    <src>game_miniBeta.luc</src>
+    <src>opLED.luc</src>
+    <component>pn_gen.luc</component>
+    <src>opTOalufn.luc</src>
+    <src>sevenseg_randA.luc</src>
+    <src>sevenseg_randB.luc</src>
+    <src>sevenseg_level.luc</src>
+    <src>variable_counter.luc</src>
+    <src>adder.luc</src>
+    <component>edge_detector.luc</component>
+    <constraint lib="true">alchitry.acf</constraint>
+    <constraint lib="true">au.xdc</constraint>
+    <constraint>custom.acf</constraint>
+  </files>
+</project>

@@ -1,0 +1,37 @@
+module opLED (
+    input clk,  // clock
+    input rst,  // reset
+    input select_button,
+    input reset_button,
+    output opled[2]
+  ) {
+  .clk(clk) {
+    .rst(rst){
+      fsm opstate = {ADD,SUB,RESET};
+    }
+  }
+
+  always {
+    opled = 00;//off
+    
+    case(opstate.q){
+      opstate.ADD:
+      if(select_button==0 && reset_button==0){
+        opstate.d = opstate.SUB;
+    }
+      else if(select_button ==1 && reset_button ==0){
+        opled = 01; //bit 0 for plus
+    }else{opstate.d = opstate.RESET;}
+     
+      opstate.SUB:
+      if(select_button==0 && reset_button==0){
+        opstate.d = opstate.ADD;
+    }
+      else if(select_button ==1 && reset_button ==0){
+        opled = 10;//bit 1 for minus
+    }else{opstate.d = opstate.RESET;}
+    
+      opstate.RESET:
+      opled = 00;
+  }
+}

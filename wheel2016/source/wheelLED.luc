@@ -1,0 +1,541 @@
+module wheelLED (
+    input clk,  // clock
+    input rst,  // reset
+    input select_button, //button to stop led
+    input reset_button, //reset button
+    output led[37]
+  ) {
+  .clk(clk) {
+    .rst(rst){
+      fsm ledstate = {BEGIN,L0, L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,LN18,
+      LN17,LN16,LN15,LN14,LN13,LN12,LN11,LN10,LN9,LN8,LN7,LN6,LN5,LN4,LN3,LN2,LN1, WIN};
+      shiftled shift;
+    }
+  }
+  const P0 = 37b1;
+  const P1 = 37b10;
+  const P2 = 37b100;
+  const P3 = 37b1000;
+  const P4 = 37b10000;
+  const P5 = 37b100000;
+  const P6 = 37b1000000;
+  const P7 = 37b10000000;
+  const P8 = 37b100000000;
+  const P9 = 37b1000000000;
+  const P10=37b10000000000;
+  const P11=37b100000000000;
+  const P12=37b1000000000000;
+  const P13=37b10000000000000;
+  const P14=37b100000000000000;
+  const P15=37b1000000000000000;
+  const P16=37b10000000000000000;
+  const P17=37b100000000000000000;
+  const P18=37b1000000000000000000;
+  const N18=37b10000000000000000000;
+  const N17=37b100000000000000000000;
+  const N16=37b1000000000000000000000;
+  const N15=37b10000000000000000000000;
+  const N14=37b100000000000000000000000;
+  const N13=37b1000000000000000000000000;
+  const N12=37b10000000000000000000000000;
+  const N11=37b100000000000000000000000000;
+  const N10=37b1000000000000000000000000000;
+  const N9 = 37b10000000000000000000000000000;
+  const N8 = 37b100000000000000000000000000000;
+  const N7 = 37b1000000000000000000000000000000;
+  const N6 = 37b10000000000000000000000000000000;
+  const N5 = 37b100000000000000000000000000000000;
+  const N4 = 37b1000000000000000000000000000000000;
+  const N3 = 37b10000000000000000000000000000000000;
+  const N2 = 37b100000000000000000000000000000000000;
+  const N1 = 37b1000000000000000000000000000000000000;
+  always {
+    led = 37b0;
+    shift.led = 0; //num being shift
+    shift.shifter = 0; //shifter so always shift 1 bit
+    //define cases
+    case(ledstate.q){
+      ledstate.BEGIN:
+        if(select_button==1){ ledstate.d = ledstate.L0;}
+      ledstate.L0:
+      shift.led = P0;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L1;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P0;
+        }
+       else{led = 37b0;}
+      
+      ledstate.L1:
+      shift.led = P1;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L2;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        led = P1; //store led result to register
+        }
+       else{led = 37b0;}
+
+      ledstate.L2:
+      shift.led = P2;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L3;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P2;
+        }
+       else{led = 37b0;}     
+
+      ledstate.L3:
+      shift.led = P3;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L3;
+       }
+      else if (select_button ==1 && reset_button==0){
+        //store wheel result 
+        led = P3;
+        }
+       else{led = 37b0;}
+      
+      ledstate.L4:
+      shift.led = P4;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L5;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P4;
+        }
+       else{led = 37b0;}
+     
+      ledstate.L5:
+      shift.led = P5;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L6;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P5;
+        }
+       else{led = 37b0;}
+        
+      ledstate.L6:
+      shift.led = P6;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L7;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P6;
+        }
+       else{led = 37b0;}
+        
+      ledstate.L7:
+      shift.led = P7;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L8;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P7;
+        }
+       else{led = 37b0;}
+
+      ledstate.L8:
+      shift.led = P8;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L9;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led =P8;
+        }
+       else{led = 37b0;}
+        
+      ledstate.L9:
+      shift.led = P9;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L10;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P9;
+        }
+      else{led = 37b0;}
+       
+      ledstate.L10:
+      shift.led = P10;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L11;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P10;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L11:
+      shift.led = P11;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L12;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result
+        led =  P11;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L12:
+      shift.led = P12;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L13;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P12;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L13:
+      shift.led = P13;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L14;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P13;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L14:
+      shift.led = P14;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L15;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P14;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L15:
+      shift.led = P15;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L16;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result
+        led =  P15;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L16:
+      shift.led = P16;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L17;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P16;
+        }
+      else{led = 37b0;}
+        
+      ledstate.L17:
+      shift.led = P17;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L18;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P17;
+        }
+      else{led = 37b0;}
+      
+      ledstate.L18:
+      shift.led = P18;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN18;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = P18;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN18:
+      shift.led = N18;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN17;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N18;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN17:
+      shift.led = N17;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN16;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result
+          led = N17; 
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN16:
+      shift.led = N16;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN15;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = N16;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN15:
+      shift.led = N15;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN14;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+        led = N15;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN14:
+      shift.led = N14;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN13;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N14;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN13:
+      shift.led = N13;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN12;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N13;
+        }
+      else{led = 37b0;}
+        
+        
+      ledstate.LN12:
+      shift.led = N12;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN11;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result
+          led = N12 ;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN11:
+      shift.led = N11;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN10;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N11;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN10:
+      shift.led = N10;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN9;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N10;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN9:
+      shift.led = N9;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN8;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N9;
+        }
+      else{led = 37b0;}
+       
+      ledstate.LN8:
+      shift.led = N8;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN7;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N8;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN7:
+      shift.led = N7;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN6;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N7;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN6:
+      shift.led = N6;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN5;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result
+        led = N6; 
+        }
+      else{led = 37b0;}
+      
+      ledstate.LN5:
+      shift.led = N5;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN4;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result
+        led = N5; 
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN4:
+      shift.led = N4;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN3;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N4;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN3:
+      shift.led = N3;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN2;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N3;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN2:
+      shift.led = N2;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.LN1;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N2;
+        }
+      else{led = 37b0;}
+        
+      ledstate.LN1:
+      shift.led = N1;
+      shift.shifter = 37b1;
+      if(select_button==0 && reset_button ==0){
+        led = shift.out;
+        ledstate.d = ledstate.L0;
+       }
+      else if (select_button ==1 && reset_button ==0){
+        //store wheel result 
+          led = N1;
+        }
+      else{led = 37b0;}
+    }
+}

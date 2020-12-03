@@ -1,0 +1,87 @@
+module game_miniBeta (
+   input clk, // clock
+   input rst, // reset
+   input reset_button,
+   input select_button,
+
+    
+
+   output level[16],
+   output randA[16],
+   output randB[16]  
+ 
+   )
+  
+{
+   sig inputAlu_a[16];
+   sig inputAlu_b[16];
+   alu alu;
+ 
+   .clk(clk){
+     //edge_detector edge_detector_variableCounter (#RISE(1), #FALL(0));
+       .rst(rst){
+           game_CU controlunit;
+           game_miniRegfiles player;
+           wheelLED wheelLED;
+           
+           //opLED opLED;
+           variable_counter vc;                                        // ???
+           counter count(#SIZE(1), #DIV(26));                          // ???
+       }
+   }
+ ledTOnum ledTOnum;
+   always {
+  
+       //edge_detector_variableCounter.in = vc.out;
+       
+       // set up control unit/game_CU
+       controlunit.reset_button = reset_button;
+       controlunit.select_button = select_button;
+    
+        wheelLED.reset_button = reset_button;
+        wheelLED.select_button = select_button;
+        ledTOnum.led = wheelLED.led;
+ 
+  
+       // set up regfile unit/player
+       player.we = controlunit.we_regfile;
+       player.write_address = controlunit.regfile_write_address;
+       player.read_address_a = controlunit.regfile_read_address_a; // pass ra_a to player regfile
+       player.read_address_b = controlunit.regfile_read_address_b; // pass ra_b to player regfile
+       
+    
+       controlunit.regfile_datain = player.out_b; // pass data_out_b to control unit
+  
+       // asel mux
+       case(controlunit.asel) {
+           b00: inputAlu_a = 0;
+           b01: inputAlu_a = 1;
+           b10: inputAlu_a = player.out_a;
+           default: inputAlu_a = 0;
+       }
+ 
+       // bsel direct read port
+       inputAlu_b = player.out_b;
+ 
+       // ALU
+       alu.a = inputAlu_a;
+       alu.b = inputAlu_b;
+       alu.alufn_signal = controlunit.alufn;
+  
+       // wdsel mux                  // below ALU output
+       case(controlunit.alu_out_sel){
+      b00:player.data = 0;
+      b01:player.data = vc.out;//rand number generate
+      b10:player.data = ledTOnum.userAnswer;
+      default:player.data = alu.out;
+    }
+    
+    level = player.level;
+    randA = player.randA;
+    randB = player.randB;
+    
+   } // end of always
+  
+} // end of module
+ 
+

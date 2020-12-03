@@ -1,0 +1,15 @@
+module opTOalufn (
+
+    input opled[2],
+    output ledalufn[6]
+  ) {
+  always {
+    ledalufn = 0;
+    
+    case(opled){
+      1: ledalufn = 000000;//for plus
+      2: ledalufn = 000001;//for minus
+      default:ledalufn = 0;
+    }
+  }
+}
